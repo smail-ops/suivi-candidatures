@@ -59,4 +59,4 @@ Le même composant fonctionne tel quel dans les deux environnements, sans rien �
 
 ## Données
 
-Ce dépôt ne contient que des données de démonstration fictives (`SEED`, dans `CandidatureTracker.jsx`). Au premier lancement, l'app les charge une fois, puis toutes les modifications de l'utilisateur (ajout, édition, statut) sont sauvegardées dans son propre stockage — aucune donnée personnelle n'est codée en dur dans la source.
+Ce dépôt ne contient que des données de démonstration fictives (`SEED`, dans `CandidatureTracker.jsx`). Au premier lancement, l'app les charge une fois, puis toutes les modifications de l'utilisateur (ajout, édition, statut) sont sauvegardées dans son propre stockage aucune donnée personnelle n'est codée en dur dans la source.
