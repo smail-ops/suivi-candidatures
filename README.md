@@ -5,9 +5,13 @@ Tracker de recherche d'emploi en React : centraliser ses candidatures, suivre le
 ## Fonctionnalités
 
 - Suivi par statut : en attente, vivier / pause, refusé, sans suite
+- Canal d'origine de chaque candidature (candidature directe, réseau, sollicitation entrante...)
 - Compteur automatique du nombre de jours écoulés depuis la dernière action sur les candidatures "en attente"
+- Recherche (entreprise, poste, note) et filtres par statut
+- Vue statistiques : taux de réponse, répartition par statut et par canal
+- Export CSV de toutes les candidatures
+- Historique des changements de statut par candidature
 - Ajout, édition et suppression de candidatures
-- Filtres par statut
 - Sauvegarde automatique persistante
 
 ## Stack
@@ -37,7 +41,7 @@ npm run preview   # pour vérifier le build en local
 ## Stockage
 
 Le composant embarque un petit adaptateur de stockage (`storage`) qui :
-- utilise `window.storage` quand il est disponible (environnement des artifacts Claude.ai) ;
+- utilise `window.storage` quand il est disponible (environnement où le composant a été prototypé) ;
 - retombe automatiquement sur `localStorage` dans n'importe quel autre contexte — donc aussi en local avec `npm run dev`.
 
 Le même composant fonctionne tel quel dans les deux environnements, sans rien à changer.
