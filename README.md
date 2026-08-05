@@ -27,7 +27,7 @@ npm run dev
 
 Vite affiche une adresse locale (en général `http://localhost:5173`) — ouvre-la dans ton navigateur, l'app tourne.
 
-Pour un build de production statique (déployable n'importe où — Netlify, Vercel, GitHub Pages...) :
+Pour un build de production statique (déployable n'importe où  Netlify, Vercel, GitHub Pages...) :
 
 ```bash
 npm run build
