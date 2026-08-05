@@ -37,8 +37,8 @@ npm run preview   # pour vérifier le build en local
 ## Stockage
 
 Le composant embarque un petit adaptateur de stockage (`storage`) qui :
-- utilise `window.storage` quand il est disponible (environnement des artifacts Claude.ai) ;
-- retombe automatiquement sur `localStorage` dans n'importe quel autre contexte — donc aussi en local avec `npm run dev`.
+- utilise `window.storage` quand il est disponible ;
+- retombe automatiquement sur `localStorage` dans n'importe quel autre contexte  donc aussi en local avec `npm run dev`.
 
 Le même composant fonctionne tel quel dans les deux environnements, sans rien à changer.
 
