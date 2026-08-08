@@ -120,11 +120,25 @@ function exportCSV(candidatures) {
   URL.revokeObjectURL(url);
 }
 
+// Turns a visible label into a stable id ("Entreprise *" -> "field-entreprise").
+// Used to tie every <label> to its control: better accessibility, and stable
+// selectors for the automated tests (get_by_label) instead of brittle CSS paths.
+function fieldId(label) {
+  return 'field-' + label
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
 function FieldInput({ label, value, onChange, type = 'text' }) {
+  const id = fieldId(label);
   return (
     <div>
-      <label className="text-xs font-mono uppercase tracking-wide" style={{ color: SECONDARY }}>{label}</label>
+      <label htmlFor={id} className="text-xs font-mono uppercase tracking-wide" style={{ color: SECONDARY }}>{label}</label>
       <input
+        id={id}
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -136,10 +150,12 @@ function FieldInput({ label, value, onChange, type = 'text' }) {
 }
 
 function FieldTextarea({ label, value, onChange }) {
+  const id = fieldId(label);
   return (
     <div>
-      <label className="text-xs font-mono uppercase tracking-wide" style={{ color: SECONDARY }}>{label}</label>
+      <label htmlFor={id} className="text-xs font-mono uppercase tracking-wide" style={{ color: SECONDARY }}>{label}</label>
       <textarea
+        id={id}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         rows={2}
@@ -151,10 +167,12 @@ function FieldTextarea({ label, value, onChange }) {
 }
 
 function FieldSelect({ label, value, onChange, options }) {
+  const id = fieldId(label);
   return (
     <div>
-      <label className="text-xs font-mono uppercase tracking-wide" style={{ color: SECONDARY }}>{label}</label>
+      <label htmlFor={id} className="text-xs font-mono uppercase tracking-wide" style={{ color: SECONDARY }}>{label}</label>
       <select
+        id={id}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="w-full mt-1 rounded px-2.5 py-2 text-sm font-mono"
@@ -180,7 +198,7 @@ function Card({ c, isEditing, onToggleEdit, onUpdateStatut, onSaveEdit, onDelete
 
   if (isEditing) {
     return (
-      <div className="rounded-lg p-4 mb-3" style={{ backgroundColor: PANEL, border: `1px solid ${BORDER}` }}>
+      <div data-testid="candidature-edit" className="rounded-lg p-4 mb-3" style={{ backgroundColor: PANEL, border: `1px solid ${BORDER}` }}>
         <div className="space-y-2.5">
           <FieldInput label="Entreprise" value={draft.entreprise} onChange={(v) => setDraft({ ...draft, entreprise: v })} />
           <FieldInput label="Poste" value={draft.poste} onChange={(v) => setDraft({ ...draft, poste: v })} />
@@ -215,7 +233,7 @@ function Card({ c, isEditing, onToggleEdit, onUpdateStatut, onSaveEdit, onDelete
   }
 
   return (
-    <div className="rounded-lg mb-3 overflow-hidden" style={{ backgroundColor: PANEL, borderTop: `1px solid ${BORDER}`, borderRight: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}`, borderLeft: `3px solid ${statutInfo.color}` }}>
+    <div data-testid="candidature-card" className="rounded-lg mb-3 overflow-hidden" style={{ backgroundColor: PANEL, borderTop: `1px solid ${BORDER}`, borderRight: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}`, borderLeft: `3px solid ${statutInfo.color}` }}>
       <div className="p-4">
         <div className="flex items-start justify-between gap-2">
           <div className="flex-1 min-w-0">
@@ -262,6 +280,8 @@ function Card({ c, isEditing, onToggleEdit, onUpdateStatut, onSaveEdit, onDelete
         )}
 
         <select
+          data-testid="card-statut"
+          aria-label="Changer le statut"
           value={c.statut}
           onChange={(e) => onUpdateStatut(c.id, e.target.value)}
           className="mt-3 text-xs font-mono rounded px-2 py-1.5"
@@ -443,7 +463,7 @@ export default function CandidatureTracker() {
             </button>
           </div>
         </div>
-        <p className="font-mono text-xs mt-1" style={{ color: SECONDARY }}>
+        <p data-testid="compteur" className="font-mono text-xs mt-1" style={{ color: SECONDARY }}>
           {candidatures.length} pistes · {counts.attente} attente · {counts.vivier} pause · {counts.refuse} refus · {counts.sans_suite} sans suite
         </p>
         {saveError && (
@@ -516,6 +536,7 @@ export default function CandidatureTracker() {
         <div className="fixed inset-0 z-30 flex items-end">
           <div className="absolute inset-0" style={{ backgroundColor: 'rgba(0,0,0,0.6)' }} onClick={() => setShowAddForm(false)} />
           <div
+            data-testid="add-form"
             className="relative w-full rounded-t-2xl p-4 overflow-y-auto"
             style={{ backgroundColor: PANEL, borderTop: `1px solid ${BORDER}`, maxHeight: '85vh' }}
           >
